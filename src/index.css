@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-primary: #090d16;
+  --bg-secondary: #121b2d;
+  --bg-tertiary: rgba(30, 41, 59, 0.7);
+  --border-color: rgba(255, 255, 255, 0.08);
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  
+  --accent: #2563eb;
+  --accent-glow: rgba(37, 99, 235, 0.4);
+  
+  /* 전선 색상 표준 */
+  --wire-l1: #854d0e;       /* 갈색 */
+  --wire-l2: #475569;       /* 회색 */
+  --wire-l3: #1e293b;       /* 흑색 */
+  --wire-pe: #15803d;       /* 녹황(접지) */
+  --wire-control: #eab308;  /* 황색 (보조회로) */
+  
+  /* 통전 네온 효과 */
+  --glow-active: #ff3e3e;    /* 활성 전류 (네온 레드/오렌지) */
+  --glow-l2: #38bdf8;        /* L2 리턴 라인 (네온 블루) */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', 'Malgun Gothic', sans-serif;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  height: 100vh;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Glassmorphism Panel */
+.glass-panel {
+  background: var(--bg-tertiary);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Animations */
+@keyframes neon-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 2px var(--glow-active)) drop-shadow(0 0 6px var(--glow-active));
+  }
+  50% {
+    filter: drop-shadow(0 0 4px var(--glow-active)) drop-shadow(0 0 12px var(--glow-active));
+  }
+}
+
+@keyframes flow-dash {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+@keyframes flicker-flash {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; filter: drop-shadow(0 0 8px currentColor); }
+}
+
+/* Simulator Wire Styles */
+.wire-path {
+  fill: none;
+  stroke: var(--wire-control);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.4;
+  transition: stroke 0.3s, opacity 0.3s;
+}
+
+.wire-path.active {
+  stroke: var(--glow-active);
+  opacity: 1;
+  filter: drop-shadow(0 0 3px var(--glow-active));
+  stroke-dasharray: 8, 4;
+  animation: flow-dash 1s linear infinite, neon-pulse 2s ease-in-out infinite;
+}
+
+.wire-path.return-active {
+  stroke: var(--glow-l2);
+  opacity: 0.9;
+  filter: drop-shadow(0 0 2px var(--glow-l2));
+  stroke-dasharray: 6, 6;
+  animation: flow-dash 1.5s linear infinite;
+}
+
+/* Active Node Indicator */
+.node-point {
+  fill: var(--bg-secondary);
+  stroke: var(--text-muted);
+  stroke-width: 1.5;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.node-point:hover {
+  stroke: var(--accent);
+  r: 6;
+}
+
+.node-point.active {
+  fill: var(--glow-active);
+  stroke: #fff;
+  filter: drop-shadow(0 0 4px var(--glow-active));
+}
